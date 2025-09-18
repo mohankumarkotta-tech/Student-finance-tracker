@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Finance Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Updated Styles -->
+  <style>
+    body, h1, h2, h3, h4, h5, h6, p, label, button, input, li, span {
+      font-style: italic !important;
+      font-family: "Segoe UI", sans-serif;
+      color: #fff;
+    }
+    body {
+      background-color: #000;
+    }
+    .navbar {
+      background-color: #111;
+      border-bottom: 2px solid #FFD700;
+    }
+    .navbar-brand {
+      color: #FFD700 !important;
+    }
+    .dashboard-card {
+      background-color: #1a1a1a;
+      border: 1px solid #FFD700;
+      border-radius: 12px;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+      color: #fff;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.6);
+    }
+    .dashboard-card h5 {
+      color: #FFD700;
+    }
+    .dashboard-img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+    .student-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #FFD700;
+      margin-bottom: 15px;
+    }
+    .btn-custom {
+      background-color: #000;
+      color: #FFD700;
+      border: 2px solid #FFD700;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    .btn-custom:hover {
+      background-color: #FFD700;
+      color: #000;
+      box-shadow: 0 0 15px #FFD700;
+    }
+    footer {
+      margin-top: 30px;
+      border-top: 1px solid #FFD700;
+      padding: 10px;
+      text-align: center;
+      color: #fff;
+    }
+    .module {
+      display: none;
+    }
+    .active-module {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">💰 Student Finance</a>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+
+    <!-- Student Details Form -->
+    <div id="student-form" class="active-module">
+      <h2 class="text-center fw-bold">👩‍🎓 Enter Your Details</h2>
+      <form id="detailsForm" class="mt-4">
+        <div class="mb-3">
+          <label for="studentName" class="form-label">Student Name</label>
+          <input type="text" class="form-control" id="studentName" required>
+        </div>
+        <div class="mb-3">
+          <label for="studentIncome" class="form-label">Monthly Income (₹)</label>
+          <input type="number" class="form-control" id="studentIncome" required>
+        </div>
+        <button type="submit" class="btn btn-custom">Save & Continue</button>
+      </form>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="module text-center">
+      <img src="https://cdn-icons-png.flaticon.com/512/201/201818.png" class="student-img" alt="Student">
+      <h2 class="fw-bold">📊 Welcome, <span id="displayName"></span></h2>
+      <p>Your monthly income: ₹<span id="displayIncome"></span></p>
+
+      <div class="row g-4 mt-4">
+        <div class="col-md-4">
+          <button class="card dashboard-card p-4 text-center w-100" onclick="openModule('budget')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" class="dashboard-img" alt="Budget">
+            <h5>Budget</h5><p>Plan and manage your monthly spending</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="card dashboard-card p-4 text-center w-100" onclick="openModule('expenses')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" class="dashboard-img" alt="Expenses">
+            <h5>Expenses</h5><p>Track daily expenses</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="card dashboard-card p-4 text-center w-100" onclick="openModule('savings')">
+            <img src="https://cdn-icons-png.flaticon.com/512/1048/1048914.png" class="dashboard-img" alt="Savings">
+            <h5>Savings</h5><p>Save for projects & goals</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="card dashboard-card p-4 text-center w-100" onclick="openModule('bills')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2331/2331940.png" class="dashboard-img" alt="Bills">
+            <h5>Bills</h5><p>Monitor monthly bills</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="card dashboard-card p-4 text-center w-100" onclick="openModule('split')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2769/2769103.png" class="dashboard-img" alt="Split">
+            <h5>Split Expenses</h5><p>Share costs with friends</p>
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="card dashboard-card p-4 text-center w-100" onclick="openModule('advice')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135673.png" class="dashboard-img" alt="Advice">
+            <h5>Advice</h5><p>Personalized finance tips</p>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget Module -->
+    <div id="budget" class="module">
+      <h3>📑 Budget Plan for <span id="budgetName"></span></h3>
+      <ul>
+        <li>Food: 30% (₹<span id="budgetFood"></span>)</li>
+        <li>Rent: 40% (₹<span id="budgetRent"></span>)</li>
+        <li>Transport: 10% (₹<span id="budgetTransport"></span>)</li>
+        <li>Savings: 20% (₹<span id="budgetSavings"></span>)</li>
+      </ul>
+      <button class="btn btn-custom" onclick="backToDashboard()">⬅ Back</button>
+    </div>
+
+    <!-- Expenses Module -->
+    <div id="expenses" class="module">
+      <h3>💸 Suggested Expenses for <span id="expensesName"></span></h3>
+      <ul>
+        <li>Canteen & Snacks: ~10% of income (₹<span id="expenseFood"></span>)</li>
+        <li>Books & Study Materials: ~15% of income (₹<span id="expenseBooks"></span>)</li>
+        <li>Travel & Auto: ~5% of income (₹<span id="expenseTravel"></span>)</li>
+      </ul>
+      <button class="btn btn-custom" onclick="backToDashboard()">⬅ Back</button>
+    </div>
+
+    <!-- Savings Module -->
+    <div id="savings" class="module">
+      <h3>🏦 Savings Goals for <span id="savingsName"></span></h3>
+      <ul>
+        <li>Laptop Fund: 15% (₹<span id="savingsLaptop"></span>)</li>
+        <li>College Project: 10% (₹<span id="savingsProject"></span>)</li>
+        <li>Emergency Fund: 5% (₹<span id="savingsEmergency"></span>)</li>
+      </ul>
+      <button class="btn btn-custom" onclick="backToDashboard()">⬅ Back</button>
+    </div>
+
+    <!-- Bills Module -->
+    <div id="bills" class="module">
+      <h3>📌 Monthly Bills for <span id="billsName"></span></h3>
+      <ul>
+        <li>Electricity: ~5% (₹<span id="billsElectricity"></span>)</li>
+        <li>Internet & Mobile: ~5% (₹<span id="billsInternet"></span>)</li>
+      </ul>
+      <button class="btn btn-custom" onclick="backToDashboard()">⬅ Back</button>
+    </div>
+
+    <!-- Split Expenses -->
+    <div id="split" class="module">
+      <h3>👥 Shared Costs for <span id="splitName"></span></h3>
+      <p>Room Rent (40% of income): ₹<span id="splitRent"></span> ÷ 2 roommates = ₹<span id="splitPerPerson"></span> each</p>
+      <p>Netflix Subscription: ₹600 ÷ 3 friends = ₹200 each</p>
+      <button class="btn btn-custom" onclick="backToDashboard()">⬅ Back</button>
+    </div>
+
+    <!-- Advice -->
+    <div id="advice" class="module">
+      <h3>💡 Finance Tips for <span id="adviceName"></span></h3>
+      <p id="adviceText"></p>
+      <button class="btn btn-custom" onclick="backToDashboard()">⬅ Back</button>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Student Finance Dashboard | Designed for Smart Money Habits 💡</p>
+  </footer>
+
+  <script>
+    let student = { name: "", income: 0 };
+
+    document.getElementById("detailsForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      student.name = document.getElementById("studentName").value;
+      student.income = parseInt(document.getElementById("studentIncome").value);
+
+      document.getElementById("displayName").innerText = student.name;
+      document.getElementById("displayIncome").innerText = student.income;
+
+      // Budget breakdown
+      document.getElementById("budgetName").innerText = student.name;
+      document.getElementById("budgetFood").innerText = Math.round(student.income * 0.3);
+      document.getElementById("budgetRent").innerText = Math.round(student.income * 0.4);
+      document.getElementById("budgetTransport").innerText = Math.round(student.income * 0.1);
+      document.getElementById("budgetSavings").innerText = Math.round(student.income * 0.2);
+
+      // Expenses suggestion
+      document.getElementById("expensesName").innerText = student.name;
+      document.getElementById("expenseFood").innerText = Math.round(student.income * 0.1);
+      document.getElementById("expenseBooks").innerText = Math.round(student.income * 0.15);
+      document.getElementById("expenseTravel").innerText = Math.round(student.income * 0.05);
+
+      // Savings goals
+      document.getElementById("savingsName").innerText = student.name;
+      document.getElementById("savingsLaptop").innerText = Math.round(student.income * 0.15);
+      document.getElementById("savingsProject").innerText = Math.round(student.income * 0.1);
+      document.getElementById("savingsEmergency").innerText = Math.round(student.income * 0.05);
+
+      // Bills
+      document.getElementById("billsName").innerText = student.name;
+      document.getElementById("billsElectricity").innerText = Math.round(student.income * 0.05);
+      document.getElementById("billsInternet").innerText = Math.round(student.income * 0.05);
+
+      // Split expenses
+      document.getElementById("splitName").innerText = student.name;
+      let rentShare = Math.round(student.income * 0.4);
+      document.getElementById("splitRent").innerText = rentShare;
+      document.getElementById("splitPerPerson").innerText = Math.round(rentShare / 3);
+
+      // Advice based on income
+      document.getElementById("adviceName").innerText = student.name;
+      let adviceText = "";
+      if (student.income < 5000) {
+        adviceText = "Your income is limited. Focus on essentials and save at least ₹500 per month.";
+      } else if (student.income <= 15000) {
+        adviceText = "Maintain 20% savings and avoid overspending on entertainment.";
+      } else {
+        adviceText = "With a good income, diversify savings into SIPs or mutual funds.";
+      }
+      document.getElementById("adviceText").innerText = adviceText;
+
+      // Show dashboard
+      document.getElementById("student-form").classList.remove("active-module");
+      document.getElementById("dashboard").classList.add("active-module");
+    });
+
+    function openModule(moduleId) {
+      document.getElementById("dashboard").classList.remove("active-module");
+      document.getElementById(moduleId).classList.add("active-module");
+    }
+
+    function backToDashboard() {
+      document.querySelectorAll(".module").forEach(m => m.classList.remove("active-module"));
+      document.getElementById("dashboard").classList.add("active-module");
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
